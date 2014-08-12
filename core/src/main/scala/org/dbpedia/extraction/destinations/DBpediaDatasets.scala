@@ -29,6 +29,7 @@ object DBpediaDatasets
     val IriSameAsUri = new Dataset("iri_same_as_uri")
     val FlickrWrapprLinks = new Dataset("flickr_wrappr_links")
     val PageLength = new Dataset("page_length")
+    val ImageGalleries = new Dataset("image_galleries")
 
     /**
      * Mapping based
@@ -66,7 +67,11 @@ object DBpediaDatasets
     val Homepages = new Dataset("homepages")
     val OutDegree = new Dataset("out_degree")
     
-    
+
+    /**
+     * Files
+     */
+    val FileInformation = new Dataset("file_information")
 
     /**
      * Wikidata outputDatasets
@@ -92,9 +97,15 @@ object DBpediaDatasets
     val WikidataNameSpaceSameAs = new Dataset("wikidata-namespace-sameas")
     
     // wikidata facts triples 
-    val WikidataFacts = new Dataset("wikidata")
+    val WikidataFacts = new Dataset("wikidata-facts")
     //wikidata facts triples with mapped properties to DBpedia ones 
     val WikidataMappedFacts = new Dataset("wikidata-mapped")
 
+    //wikidata alias output
+    //<http://wikidata.dbpedia.org/resource/Q446> <http://dbpedia.org/ontology/alias> "alias"@lang .
+    val WikidataAlias = new Dataset("wikidata-alias")
 
+    //wikidata description output
+    //wikidata.dbpedia.org/resource/Q139> <http://dbpedia.org/ontology/description> "description"@lang.
+    val WikidataDescription = new Dataset("wikidata-description")
 }

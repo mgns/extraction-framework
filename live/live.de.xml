@@ -13,6 +13,7 @@
             </extractor>
 
             <extractor name="org.dbpedia.extraction.mappings.ArticlePageExtractor" status="ACTIVE">
+            <!-- <extractor name="org.dbpedia.extraction.mappings.WikiPageExtractor" status="ACTIVE"> -->
                 <produces>
                     <matchPattern type="STARTSWITH" pexact="true">
                         <s></s>
