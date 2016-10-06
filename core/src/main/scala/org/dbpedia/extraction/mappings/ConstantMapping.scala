@@ -6,7 +6,7 @@ import org.dbpedia.extraction.wikiparser.TemplateNode
 import org.dbpedia.extraction.ontology.datatypes.Datatype
 import org.dbpedia.extraction.destinations.{DBpediaDatasets, Quad}
 import org.dbpedia.extraction.ontology.{OntologyProperty, OntologyObjectProperty}
-import org.dbpedia.extraction.util.{WikiUtil, Language}
+import org.dbpedia.extraction.util.{UriUtils, Language}
 import scala.language.reflectiveCalls
 
 /**
@@ -21,22 +21,28 @@ import scala.language.reflectiveCalls
  * }}
  */
 class ConstantMapping (
-  ontologyProperty: OntologyProperty,
-  private var value : String,
-  datatype : Datatype,
+  val ontologyProperty: OntologyProperty,
+  var value : String,
+  val datatype : Datatype,
   context : {
     def language : Language
   } 
 )
 extends PropertyMapping
 {
-  if (ontologyProperty.isInstanceOf[OntologyObjectProperty])
+  val isObjectProperty = ontologyProperty.isInstanceOf[OntologyObjectProperty]
+
+  //split to literal / object dataset
+  val dataset = if (isObjectProperty) DBpediaDatasets.OntologyPropertiesObjects else DBpediaDatasets.OntologyPropertiesLiterals
+
+  if (isObjectProperty)
   {
     require(datatype == null, "expected no datatype for object property '"+ontologyProperty+"', but found datatype '"+datatype+"'")
-    try {
+    value = try {
       // if it is a URI return it directly
       val uri = new URI(value)
-      if (uri.getScheme == null) "http://" + uri.toString
+      // if the URI is absolute, we can use it directly. otherwise we make a DBpedia resource URI
+      if (!uri.isAbsolute) context.language.resourceUri.append(value)
       else uri.toString
     } catch {
       // otherwise create a DBpedia resource URI
@@ -44,11 +50,11 @@ extends PropertyMapping
     }
   }
 
-  override val datasets = Set(DBpediaDatasets.OntologyProperties)
+  override val datasets = Set(DBpediaDatasets.OntologyPropertiesObjects, DBpediaDatasets.OntologyPropertiesLiterals)
 
   override def extract(node : TemplateNode, subjectUri : String, pageContext : PageContext) : Seq[Quad] =
   {
-    Seq(new Quad(context.language, DBpediaDatasets.OntologyProperties, subjectUri, ontologyProperty, value, node.sourceUri, datatype))
+    Seq(new Quad(context.language, dataset, subjectUri, ontologyProperty, value, node.sourceUri, datatype))
   }
 
 

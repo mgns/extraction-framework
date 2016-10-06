@@ -1,13 +1,16 @@
 package org.dbpedia.extraction.live.storage
 
-import org.dbpedia.extraction.destinations._
+import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
 import org.apache.log4j.Logger
-import scala.util.parsing.json._
-import collection.mutable.{ListBuffer, ArrayBuffer, HashMap}
-import org.dbpedia.extraction.live.core.LiveOptions
+import org.dbpedia.extraction.destinations._
 import org.dbpedia.extraction.destinations.formatters.UriPolicy._
-import java.util.HashSet
+import org.dbpedia.extraction.live.core.LiveOptions
+
 import scala.collection.JavaConversions._
+import scala.collection.mutable.{ArrayBuffer, HashMap, ListBuffer}
+
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.scala.DefaultScalaModule
 
 /**
  * This class retrieves the stored cache for a resource extraction.
@@ -46,19 +49,22 @@ class JSONCache(pageID: Long, pageTitle: String) {
       val sm = i.asInstanceOf[Map[String, Any]]
       sm.foreach{
         case(ks,vs) =>
-        val subject = ks.toString
+        val subject = org.apache.commons.lang.StringEscapeUtils.unescapeJava(ks.toString)
         vs.asInstanceOf[Map[String, Any]].foreach{
           case(kp,vp) =>
-          val predicate = kp.toString
+          val predicate = org.apache.commons.lang.StringEscapeUtils.unescapeJava(kp.toString)
           val objLsit = vp.asInstanceOf[List[Map[String,String]]]
           for (obj <- objLsit) {
-                val objValue: String = obj.getOrElse("value","")
-                val objType: String = obj.getOrElse("type","")
-                val objLang: String = obj.getOrElse("lang", LiveOptions.options.get("language"))
-                val objDatatype: String = obj.getOrElse("datatype", "http://www.w3.org/2001/XMLSchema#string")
+            val objType: String = obj.getOrElse("type","")
+            val objDatatype: String = obj.getOrElse("datatype", "http://www.w3.org/2001/XMLSchema#string")
+            val finalDatatype = if (objType.equals("uri")) null else objDatatype // null datatype if uri
+            val objLang: String = obj.getOrElse("lang", JSONCache.defaultLanguage)
 
-                val finalDatatype = if (objType.equals("uri")) null else objDatatype // null datatype if uri
-                quads += new Quad(objLang,"",subject, predicate, objValue, "", finalDatatype)
+            val objValue: String = obj.getOrElse("value","")
+            // unescape if URI
+            val finalValue = if (finalDatatype == null) org.apache.commons.lang.StringEscapeUtils.unescapeJava(objValue) else objValue
+
+            quads += new Quad(if (objLang.isEmpty) JSONCache.defaultLanguage else objLang ,"",subject, predicate, objValue, "", finalDatatype)
 
           }
         }
@@ -84,8 +90,12 @@ class JSONCache(pageID: Long, pageTitle: String) {
     extractorJSON.getOrElse(extractor, "")
   }
 
-  def updateCache(json: String, subjectsSet: HashSet[String], diff: String): Boolean = {
+  def updateCache(json: String, subjectsSet: java.util.Set[String], diff: String, isModified: Boolean): Boolean = {
     val updatedTimes = if ( cacheObj == null || performCleanUpdate()) "0" else (cacheObj.updatedTimes + 1).toString
+
+    if ( ! isModified) {
+      return JDBCUtil.execPrepared(DBpediaSQLQueries.getJSONCacheUpdateUnmodified, Array[String](updatedTimes, "" + this.pageID))
+    }
     
     // On clean Update do not reuse existing subjects
     if (cacheObj != null && !performCleanUpdate())
@@ -97,7 +107,7 @@ class JSONCache(pageID: Long, pageTitle: String) {
     if (subjectsSet.size()>0)
       subjects.deleteCharAt(subjects.length-1); //delete last comma
 
-    // Check wheather to update or insert
+    // Check wheather to update oΑr insert
     if (cacheExists) {
       return JDBCUtil.execPrepared(DBpediaSQLQueries.getJSONCacheUpdate, Array[String](this.pageTitle, updatedTimes,  json, subjects.toString, diff,  "" + this.pageID))
     }
@@ -112,8 +122,7 @@ class JSONCache(pageID: Long, pageTitle: String) {
       cacheExists = true
       if (cacheObj.json.equals("")) return
 
-      val json: Option[Any] = JSON.parseFull(cacheObj.json)
-      val map: Map[String, Any] = json.get.asInstanceOf[Map[String, Any]]
+      val map = JSONCache.mapper.readValue[Map[String, Any]](cacheObj.json)
 
       map.foreach {
         case (key, value) => {
@@ -138,6 +147,11 @@ class JSONCache(pageID: Long, pageTitle: String) {
 }
 
 object JSONCache {
+
+  val defaultLanguage = LiveOptions.language
+  val mapper = new ObjectMapper() with ScalaObjectMapper
+  JSONCache.mapper.registerModule(DefaultScalaModule)
+
   def setErrorOnCache(pageID: Long, error: Int) {
     JDBCUtil.execPrepared(DBpediaSQLQueries.getJSONCacheUpdateError, Array[String]("" + error, "" + pageID))
   }
@@ -147,10 +161,8 @@ object JSONCache {
     val triples = cache.getAllHashedTriples()
 
     var destList = new ArrayBuffer[LiveDestination]()
-    destList += new SPARULDestination(false, policies) // delete triples
-    destList += new PublisherDiffDestination(pageID, policies) //  unpublish in changesets
+    destList += new PublisherDiffDestination(pageID, true, if (cache.cacheObj != null) cache.cacheObj.subjects else new java.util.HashSet[String]()) //  unpublish in changesetes
     val compositeDest: LiveDestination = new CompositeLiveDestination(destList.toSeq: _*) // holds all main destinations
-
 
     compositeDest.open
     compositeDest.write("dummy extractor","dummy hash", Seq(), triples, Seq())
@@ -162,8 +174,55 @@ object JSONCache {
   def deleteCacheOnlyItem(pageID: Long) {
     JDBCUtil.execPrepared(DBpediaSQLQueries.getJSONCacheDelete, Array[String]("" + pageID))
   }
+
+  def getTriplesFromJson(jsonString: String) : Traversable[Quad] = {
+    val map = mapper.readValue[Map[String, Any]](jsonString)
+
+    val quads = new ArrayBuffer[Quad]()
+
+    // Duplicated code JSONCache.init()
+    map.foreach {
+      case (key, value) => {
+        val extractor: String = key.toString
+        val contents = value.asInstanceOf[Map[String, Any]]
+        val hash: String = contents.getOrElse("hash", "").asInstanceOf[String]
+        // Do not convert quads now, maybe they exist in cache
+        val triples: List[Any] = contents.getOrElse("triples", List()).asInstanceOf[List[Any]]
+
+        // Duplicated code  JSONCache.getTriplesForExtractor
+        if (triples != null && triples.nonEmpty) {
+
+
+          triples.foreach(i => {
+            val sm = i.asInstanceOf[Map[String, Any]]
+            sm.foreach {
+              case (ks, vs) =>
+                val subject = ks.toString
+                vs.asInstanceOf[Map[String, Any]].foreach {
+                  case (kp, vp) =>
+                    val predicate = kp.toString
+                    val objLsit = vp.asInstanceOf[List[Map[String, String]]]
+                    for (obj <- objLsit) {
+                      val objValue: String = obj.getOrElse("value", "")
+                      val objType: String = obj.getOrElse("type", "")
+                      val objLang: String = obj.getOrElse("lang", defaultLanguage)
+                      val objDatatype: String = if (objType.equals("uri"))  null
+                                                else obj.getOrElse("datatype", "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString")
+
+
+                      quads += new Quad(if (objLang.isEmpty) defaultLanguage else objLang , "", subject, predicate, objValue, "", objDatatype)
+
+                    }
+                }
+            }
+          })
+        }
+      }
+    }
+    quads
+  }
 }
 
-class JSONCacheItem(val pageID: Long, val updatedTimes: Int, val json: String, val subjects: HashSet[String]) {
+class JSONCacheItem(val pageID: Long, val updatedTimes: Int, val json: String, val subjects: java.util.Set[String]) {
 
 }

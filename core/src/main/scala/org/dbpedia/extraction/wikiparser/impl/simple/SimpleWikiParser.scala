@@ -1,13 +1,12 @@
 package org.dbpedia.extraction.wikiparser.impl.simple
 
-import org.dbpedia.extraction.util.{Language, WikiUtil}
+import org.dbpedia.extraction.util.{UriUtils, Language, WikiUtil}
 import org.dbpedia.extraction.wikiparser._
 import org.dbpedia.extraction.wikiparser.impl.wikipedia.{Disambiguation, Redirect}
 import org.dbpedia.extraction.sources.WikiPage
 import org.dbpedia.extraction.util.RichString.wrapString
-import java.net.{URISyntaxException, MalformedURLException, URL, URI}
+import java.net.{URI, URISyntaxException}
 import java.util.logging.{Level, Logger}
-import java.lang.IllegalArgumentException
 
 import SimpleWikiParser._
 
@@ -261,7 +260,7 @@ class SimpleWikiParser extends WikiParser
     {
         if(source.lastTag("[") || source.lastTag("http"))
         {
-            List(parseLink(source, level))
+            parseLink(source, level)
         }
         else if(source.lastTag("{{"))
         {
@@ -293,7 +292,7 @@ class SimpleWikiParser extends WikiParser
    * @param level
    * @return
    */
-    private def parseLink(source : Source, level : Int) : Node =
+    private def parseLink(source : Source, level : Int) : List[Node] =
     {
         val startPos = source.pos
         val startLine = source.line
@@ -329,7 +328,46 @@ class SimpleWikiParser extends WikiParser
                     List(new TextNode(destinationUri, source.line))
                 }
 
-            createInternalLinkNode(source, destinationUri, nodes, startLine, destination)
+            /**
+             * At the moment, link parsing does not support nested constructs like templates, etc so we have to check it manually here
+             * this is mainly hacked to support cases like [[{{#property:p38}}]] or [[{{#property:p38|from=Qxxx}}]]
+             */
+            val templStart = "{{"
+            val templEnd = "}}"
+            val label = nodes.map(_.toPlainText).mkString(" ").trim
+
+            var adjujstedDestinationUri = destinationUri
+            var adjustedNodes = nodes
+            if (destinationUri.contains(templStart) || label.contains(templEnd)) // there is a template to define the link
+            {
+                //get the text inside the link
+                val newText = if (destinationUri.equals(label)) destinationUri else destinationUri + "|" + label
+                //reparse the text
+                val newSource = new Source(newText, source.language)
+                newSource.line = source.line
+                val newNodes = parseUntil(new Matcher(List(), true), newSource, 0)
+
+                val newNodesToText = newNodes.map(_.toPlainText).mkString(" ").trim
+                if (newNodesToText.isEmpty && !newNodes.isEmpty)
+                {
+                    return newNodes
+                } else if (!newNodesToText.contains('|')) // same target / label
+                {
+                    adjujstedDestinationUri = newNodesToText
+                    adjustedNodes = newNodes
+                } else if (newNodesToText.contains('|'))//we need to split the label from the link
+                {
+                    adjujstedDestinationUri = newNodesToText.substring(0,newNodesToText.indexOf('|'))
+                    adjustedNodes = NodeUtil.splitNodes(newNodes, "|").drop(0).flatten //remove 1st part
+                }
+            }
+
+            try {
+                List(createInternalLinkNode(source, adjujstedDestinationUri, adjustedNodes, startLine, destination))
+            } catch {
+                // This happens when en interwiki link has a language that is not defined and thows an unknown namespace error
+                case e: IllegalArgumentException => throw new WikiParserException("Failed to parse internal link: " + destination, startLine, source.findLine(startLine))
+            }
         }
         else if(source.lastTag("["))
         {
@@ -369,10 +407,10 @@ class SimpleWikiParser extends WikiParser
                 }
 
             try {
-              createExternalLinkNode(source, destinationURI, nodes, startLine, destination)
+              List(createExternalLinkNode(source, destinationURI, nodes, startLine, destination))
             } catch {
               case _ : WikiParserException => // if the URL is not valid then it is a plain text node
-                new TextNode("[" + destinationURI + (if (hasLabel) " " + nodes.map(_.toPlainText).mkString else "") + "]", source.line)
+                List(new TextNode("[" + destinationURI + (if (hasLabel) " " + nodes.map(_.toPlainText).mkString else "") + "]", source.line))
             }
         }
         else
@@ -386,7 +424,7 @@ class SimpleWikiParser extends WikiParser
             //Use destination as label
             val nodes = List(new TextNode(destinationURI, source.line))
 
-            createExternalLinkNode(source, destinationURI, nodes, startLine, nodes)
+            List(createExternalLinkNode(source, destinationURI, nodes, startLine, nodes))
         }
     }
 
@@ -396,12 +434,23 @@ class SimpleWikiParser extends WikiParser
         {
             // TODO: Add a validation routine which conforms to Mediawiki
             // This will fail for news:// or gopher:// protocols
-            ExternalLinkNode(new URL(destination).toURI, nodes, line, destinationNodes)
+
+            //See http://www.mediawiki.org/wiki/Help:Links#External_links
+            val relProtocolDest = if (destination.startsWith("//")) "http:" + destination else destination
+
+            // Do not accept non-absolute links because '[]' can be used as wiki text
+            // e.g. CC1=CC(=CC(=C1O)[N+](=O)[O-])[N+](=O)[O-]
+            if (!UriUtils.hasKnownScheme(relProtocolDest)) throw new WikiParserException("Invalid external link: " + destination, line, source.findLine(line))
+
+            val sameHost = if (relProtocolDest.contains("{{SERVERNAME}}")) relProtocolDest.replace("{{SERVERNAME}}", source.language.baseUri.replace("http://", "")) else relProtocolDest
+
+            ExternalLinkNode(new URI(sameHost), nodes, line, destinationNodes)
+
         }
         catch
         {
             // As per URL.toURI documentation non-strictly RFC 2396 compliant URLs cannot be parsed to URIs
-            case _ : MalformedURLException | _ : URISyntaxException => throw new WikiParserException("Invalid external link: " + destination, line, source.findLine(line))
+            case _ : URISyntaxException => throw new WikiParserException("Invalid external link: " + destination, line, source.findLine(line))
         }
     }
     

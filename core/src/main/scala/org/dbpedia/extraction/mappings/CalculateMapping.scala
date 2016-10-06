@@ -12,8 +12,8 @@ import org.dbpedia.extraction.ontology.{OntologyClass, Ontology, DBpediaNamespac
 class CalculateMapping (
   val templateProperty1 : String,
   val templateProperty2 : String,
-  unit1 : Datatype,
-  unit2 : Datatype,
+  val unit1 : Datatype, // rml mappings require this to be public (e.g. ModelMapper)
+  val unit2 : Datatype, // rml mappings require this to be public (e.g. ModelMapper)
   operation : String,
   ontologyProperty : OntologyProperty,
   context : {
@@ -47,12 +47,12 @@ extends PropertyMapping
   private val parser1 = parser(unit1)
   private val parser2 = parser(unit2)
 
-  private val staticType = QuadBuilder(context.language, DBpediaDatasets.OntologyProperties, ontologyProperty, ontologyProperty.range.asInstanceOf[Datatype]) _
-  private val genericType = QuadBuilder(context.language, DBpediaDatasets.OntologyProperties, ontologyProperty, new Datatype("xsd:double")) _
-  private val dynamicType = QuadBuilder.dynamicType(context.language, DBpediaDatasets.OntologyProperties, ontologyProperty) _
+  private val staticType = QuadBuilder(context.language, DBpediaDatasets.OntologyPropertiesLiterals, ontologyProperty, ontologyProperty.range.asInstanceOf[Datatype]) _
+  private val genericType = QuadBuilder(context.language, DBpediaDatasets.OntologyPropertiesLiterals, ontologyProperty, new Datatype("xsd:double")) _
+  private val dynamicType = QuadBuilder.dynamicType(context.language, DBpediaDatasets.OntologyPropertiesLiterals, ontologyProperty) _
   private val specificType = QuadBuilder.dynamicPredicate(context.language, DBpediaDatasets.SpecificProperties) _
   
-  override val datasets = Set(DBpediaDatasets.OntologyProperties, DBpediaDatasets.SpecificProperties)
+  override val datasets = Set(DBpediaDatasets.OntologyPropertiesLiterals, DBpediaDatasets.SpecificProperties)
 
   def extract(node : TemplateNode, subjectUri : String, pageContext : PageContext) : Seq[Quad] =
   {

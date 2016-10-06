@@ -10,8 +10,8 @@ import org.dbpedia.extraction.config.dataparser.DataParserConfig
 import scala.language.reflectiveCalls
 
 class IntermediateNodeMapping (
-  nodeClass : OntologyClass,
-  correspondingProperty : OntologyProperty,
+  val nodeClass : OntologyClass, // public for rml mappings
+  val correspondingProperty : OntologyProperty, //public for rml mappings
   val mappings : List[PropertyMapping], // must be public val for statistics
   context : {
     def ontology : Ontology
@@ -26,7 +26,7 @@ extends PropertyMapping
                              DataParserConfig.splitPropertyNodeRegexInfobox.get(context.language.wikiCode).get
                            else DataParserConfig.splitPropertyNodeRegexInfobox.get("en").get
 
-  override val datasets = mappings.flatMap(_.datasets).toSet ++ Set(DBpediaDatasets.OntologyTypes,DBpediaDatasets.OntologyProperties)
+  override val datasets = mappings.flatMap(_.datasets).toSet ++ Set(DBpediaDatasets.OntologyTypes, DBpediaDatasets.OntologyTypesTransitive, DBpediaDatasets.OntologyPropertiesObjects)
     
 
   override def extract(node : TemplateNode, subjectUri : String, pageContext : PageContext) : Seq[Quad] =
@@ -44,7 +44,7 @@ extends PropertyMapping
     if(affectedTemplatePropertyNodes.size > 1)
     {
       //require their values to be all singles
-      if(valueNodes.forall(_.size == 1))
+      if(valueNodes.forall(_.size <= 1))
       {
         createInstance(graph, node, subjectUri, pageContext)
       }
@@ -85,10 +85,13 @@ extends PropertyMapping
     // only generate triples if we actually extracted some values
     if(! values.isEmpty)
     {
-      graph += new Quad(context.language, DBpediaDatasets.OntologyProperties, originalSubjectUri, correspondingProperty, instanceUri, node.sourceUri);
+      graph += new Quad(context.language, DBpediaDatasets.OntologyPropertiesObjects, originalSubjectUri, correspondingProperty, instanceUri, node.sourceUri);
       
-      for (cls <- nodeClass.relatedClasses)
-        graph += new Quad(context.language, DBpediaDatasets.OntologyTypes, instanceUri, context.ontology.properties("rdf:type"), cls.uri, node.sourceUri)
+      for (cls <- nodeClass.relatedClasses) {
+        // Here we split the transitive types from the direct type assignment
+        val typeDataset = if (cls.equals(nodeClass)) DBpediaDatasets.OntologyTypes else DBpediaDatasets.OntologyTypesTransitive
+        graph += new Quad(context.language, typeDataset, instanceUri, context.ontology.properties("rdf:type"), cls.uri, node.sourceUri)
+      }
       
       graph ++= values
     }

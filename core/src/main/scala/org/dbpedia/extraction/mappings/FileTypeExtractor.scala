@@ -32,8 +32,8 @@ class FileTypeExtractor(context: {
     // RDF properties we use.
     private val fileExtensionProperty = context.ontology.properties("fileExtension")
     private val rdfTypeProperty = context.ontology.properties("rdf:type")
-    private val dcTypeProperty = context.ontology.properties("dct:type")
-    private val dcFormatProperty = context.ontology.properties("dct:format")
+    private val dctTypeProperty = context.ontology.properties("dct:type")
+    private val dctFormatProperty = context.ontology.properties("dct:format")
     private val dboFileURLProperty = context.ontology.properties("fileURL")
     private val dboThumbnailProperty = context.ontology.properties("thumbnail")
     private val foafDepictionProperty = context.ontology.properties("foaf:depiction")
@@ -44,7 +44,7 @@ class FileTypeExtractor(context: {
     private val dboStillImage = context.ontology.classes("StillImage")
 
     // All data will be written out to DBpediaDatasets.FileInformation.
-    override val datasets = Set(DBpediaDatasets.FileInformation)
+    override val datasets = Set(DBpediaDatasets.FileInformation, DBpediaDatasets.OntologyTypes, DBpediaDatasets.OntologyTypesTransitive)
 
     /**
      * Extract a single WikiPage. We guess the file type from the file extension
@@ -149,7 +149,7 @@ class FileTypeExtractor(context: {
      * Generate quads that describe the file types for an extension.
      *  <resource> dbo:fileExtension "extension"^^xsd:string
      *  <resource> 
-     *  <resource> dc:type dct:StillImage
+     *  <resource> dct:type dct:StillImage
      *  <resource> rdf:type dbo:File
      *  <resource> rdf:type dbo:Document
      *  <resource> rdf:type dbo:Image
@@ -173,31 +173,42 @@ class FileTypeExtractor(context: {
         val depiction_and_thumbnail_quads = if(fileTypeClass != dboStillImage) Seq.empty
             else generateImageURLQuads(page, subjectUri)
 
-        // 4. <resource> dc:type fileTypeClass
+        // 4. <resource> dct:type fileTypeClass
         val file_type_quad = new Quad(
             Language.English, DBpediaDatasets.FileInformation,
             subjectUri,
-            dcTypeProperty,
+            dctTypeProperty,
             fileTypeClass.uri,
             page.sourceUri,
             null
         )
             
-        // 5. <resource> dc:format "mimeType"^^xsd:string
+        // 5. <resource> dct:format "mimeType"^^xsd:string
         val mime_type_quad = new Quad(
             Language.English, DBpediaDatasets.FileInformation,
             subjectUri,
-            dcFormatProperty,
+            dctFormatProperty,
             mimeType,
             page.sourceUri,
             xsdString
         )
 
-        // 6. For fileTypeClass and dbo:File, add all related classes.
-        val relatedRDFClasses = (dboFile.relatedClasses ++ fileTypeClass.relatedClasses).toSet
+        // 6. Add dboFile as direct type
+        val rdf_type_direct = new Quad(
+          Language.English,
+          DBpediaDatasets.OntologyTypes,
+          subjectUri,
+          rdfTypeProperty,
+          dboFile.uri,
+          page.sourceUri,
+          null
+        )
+
+        // 7. For fileTypeClass and dbo:File, add all related classes.
+        val relatedRDFClasses = (dboFile.relatedClasses ++ fileTypeClass.relatedClasses).toSet.filter( _ != dboFile) // remove direct type
         val rdf_type_from_related_quads = relatedRDFClasses.map(rdfClass =>
             new Quad(Language.English,
-                DBpediaDatasets.FileInformation,
+                DBpediaDatasets.OntologyTypesTransitive,
                 subjectUri,
                 rdfTypeProperty,
                 rdfClass.uri,
@@ -207,7 +218,7 @@ class FileTypeExtractor(context: {
         )
 
         // Return all quads.
-        Seq(file_extension_quad, file_type_quad, mime_type_quad) ++ 
+        Seq(file_extension_quad, file_type_quad, mime_type_quad, rdf_type_direct) ++
             depiction_and_thumbnail_quads ++
             rdf_type_from_related_quads.toSeq
     }

@@ -2,10 +2,12 @@ package org.dbpedia.extraction.sources;
 
 import org.dbpedia.extraction.util.Language;
 import org.dbpedia.extraction.wikiparser.*;
+import org.dbpedia.extraction.wikiparser.impl.wikipedia.Namespaces;
 import org.dbpedia.util.Exceptions;
 import org.dbpedia.util.text.xml.XMLStreamUtils;
 
 import scala.Function1;
+import scala.Option;
 import scala.util.control.ControlThrowable;
 
 import javax.xml.stream.XMLInputFactory;
@@ -13,6 +15,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -213,19 +216,28 @@ public class WikipediaDumpParser
     }
 
     // now after </ns>
-    
+
     if (title != null && title.namespace().code() != nsCode)
     {
-      Namespace expected = Namespace.values().apply(nsCode);
-      logger.log(Level.WARNING, "Error parsing title: found namespace "+title.namespace()+", expected "+expected+" in title "+titleStr);
-      title.otherNamespace_$eq(expected);
+      try
+      {
+        Namespace expNs = new Namespace(nsCode, Namespaces.names(_language).get(nsCode).get(), false);
+        logger.log(Level.WARNING, "Error parsing title: found namespace " + title.namespace() + ", expected " + expNs + " in title " + titleStr);
+        title.otherNamespace_$eq(expNs);
+      }
+      catch (NoSuchElementException e)
+      {
+        logger.log(Level.WARNING, String.format("Error parsing title: found namespace %s, title %s , key %s", title.namespace(),titleStr, nsCode));
+        skipTitle();
+        return;
+      }
     }
 
     //Skip bad titles and filtered pages
     if (title == null || ! _filter.apply(title))
     {
-        while(! isEndElement(PAGE_ELEM)) _reader.next();
-        return;
+      skipTitle();
+      return;
     }
 
     //Read page id
@@ -271,6 +283,10 @@ public class WikipediaDumpParser
     }
     
     requireEndElement(PAGE_ELEM);
+  }
+
+  private void skipTitle() throws XMLStreamException {
+    while(! isEndElement(PAGE_ELEM)) _reader.next();
   }
 
   private WikiPage readRevision(WikiTitle title, WikiTitle redirect, String pageId)
@@ -364,10 +380,8 @@ public class WikipediaDumpParser
    */
   
   /**
-   * @param name expected name of element. if null, don't check name.
-   * @param nextTag should we advance to the next tag after the closing tag of this element?
+   * @param titleString expected name of element. if null, don't check name.
    * @return null if title cannot be parsed for some reason
-   * @throws XMLStreamException
    */
   private WikiTitle parseTitle( String titleString )
   {

@@ -583,6 +583,8 @@
     {{ PropertyMapping | templateProperty = costumista | ontologyProperty = costumeDesigner }}
     {{ PropertyMapping | templateProperty = truccatore | ontologyProperty = makeupArtist }}
     {{ PropertyMapping | templateProperty = premi | ontologyProperty = award }}
+}}</text></revision></page><page><title>Mapping it:Fiume</title><ns>212</ns><id>5821</id><revision><id>49413</id><timestamp>2015-10-30T10:55:36Z</timestamp><text>{{TemplateMapping
+| mapToClass = River
 }}</text></revision></page><page><title>Mapping it:Fumetto e animazione</title><ns>212</ns><id>5820</id><revision><id>35269</id><timestamp>2014-06-17T08:41:08Z</timestamp><text>{{ TemplateMapping
     | mapToClass = Comics
     | mappings =
@@ -596,8 +598,6 @@
     {{ PropertyMapping | templateProperty = editore 2 | ontologyProperty = producer }}
     {{ PropertyMapping | templateProperty = data inizio Italia | ontologyProperty = firstPublicationDate }}
     {{ PropertyMapping | templateProperty = rete | ontologyProperty = broadcastNetwork }}
-}}</text></revision></page><page><title>Mapping it:Gamebox</title><ns>212</ns><id>5767</id><revision><id>18641</id><timestamp>2012-05-24T16:22:43Z</timestamp><text>{{TemplateMapping
-| mapToClass = VideoGame
 }}</text></revision></page><page><title>Mapping it:Gara ciclistica</title><ns>212</ns><id>5843</id><revision><id>18810</id><timestamp>2012-06-06T15:32:44Z</timestamp><text>{{TemplateMapping
 | mapToClass = CyclingCompetition
 }}</text></revision></page><page><title>Mapping it:Genere musicale</title><ns>212</ns><id>9499</id><revision><id>35270</id><timestamp>2014-06-17T08:41:10Z</timestamp><text>{{ TemplateMapping
@@ -758,8 +758,6 @@
     {{ PropertyMapping | templateProperty = struttura | ontologyProperty = airportUsing }}
 }}</text></revision></page><page><title>Mapping it:Infobox conflitto</title><ns>212</ns><id>5833</id><revision><id>18800</id><timestamp>2012-06-06T15:24:30Z</timestamp><text>{{TemplateMapping
 | mapToClass = MilitaryConflict
-}}</text></revision></page><page><title>Mapping it:Infobox fiume</title><ns>212</ns><id>5821</id><revision><id>18788</id><timestamp>2012-06-06T15:13:37Z</timestamp><text>{{TemplateMapping
-| mapToClass = River
 }}</text></revision></page><page><title>Mapping it:Infobox isola</title><ns>212</ns><id>5834</id><revision><id>18801</id><timestamp>2012-06-06T15:25:19Z</timestamp><text>{{TemplateMapping
 | mapToClass = Island
 }}</text></revision></page><page><title>Mapping it:Infobox malattia</title><ns>212</ns><id>5844</id><revision><id>18811</id><timestamp>2012-06-06T15:33:32Z</timestamp><text>{{TemplateMapping
@@ -1119,12 +1117,12 @@
     | mapToClass = Hospital
     | mappings =
     {{ PropertyMapping | templateProperty = Indirizzo | ontologyProperty = address }}
-}}</text></revision></page><page><title>Mapping it:Paesi membri</title><ns>212</ns><id>9526</id><revision><id>35304</id><timestamp>2014-06-17T08:41:39Z</timestamp><text>{{ TemplateMapping
+}}</text></revision></page><page><title>Mapping it:Paesi membri</title><ns>212</ns><id>9526</id><revision><id>49564</id><timestamp>2015-11-22T15:10:59Z</timestamp><text>{{ TemplateMapping
     | mapToClass = Country
     | mappings =
     {{ PropertyMapping | templateProperty = valute | ontologyProperty = value }}
-    {{ PropertyMapping | templateProperty = popolazione | ontologyProperty = population }}
-    {{ PropertyMapping | templateProperty = densità | ontologyProperty = density }}
+    {{ PropertyMapping | templateProperty = popolazione | ontologyProperty = populationTotal }}
+    {{ PropertyMapping | templateProperty = densità | ontologyProperty = populationDensity }}
     {{ PropertyMapping | templateProperty = superficie | ontologyProperty = hasSurfaceForm }}
     {{ PropertyMapping | templateProperty = PIL | ontologyProperty = grossDomesticProduct }}
 }}</text></revision></page><page><title>Mapping it:Paralimpiade</title><ns>212</ns><id>9546</id><revision><id>35330</id><timestamp>2014-06-17T08:53:55Z</timestamp><text>{{ TemplateMapping
@@ -1252,7 +1250,7 @@
     | mappings =
     {{ PropertyMapping | templateProperty = nome | ontologyProperty = foaf:name }}
     {{ PropertyMapping | templateProperty = genere | ontologyProperty = category }}
-}}</text></revision></page><page><title>Mapping it:Sportivo</title><ns>212</ns><id>5139</id><revision><id>35354</id><timestamp>2014-06-18T16:32:55Z</timestamp><text>&lt;!--
+}}</text></revision></page><page><title>Mapping it:Sportivo</title><ns>212</ns><id>5139</id><revision><id>51065</id><timestamp>2016-05-12T09:22:36Z</timestamp><text>&lt;!--
 1. Map to more specific classes depending on the "Disciplina" template property
 cf. http://it.wikipedia.org/wiki/Template:Sportivo#Parametro_disciplina
 2. Only top covered sports are mapped, according to this query:
@@ -1491,7 +1489,7 @@ select count(?s) as ?n, ?d where { ?s a &lt;http://dbpedia.org/ontology/Athlete&
     {{ Condition
         | templateProperty = Disciplina
         | operator = contains
-        | value = ennis
+        | value = uoto
         | mapping =
         {{ TemplateMapping
             | mapToClass = Swimmer
@@ -1765,13 +1763,13 @@ select count(?s) as ?n, ?d where { ?s a &lt;http://dbpedia.org/ontology/Athlete&
     | mappings =
     {{ PropertyMapping | templateProperty = nota | ontologyProperty = notes }}
     {{ PropertyMapping | templateProperty = anno | ontologyProperty = year }}
-}}</text></revision></page><page><title>Mapping it:Stato</title><ns>212</ns><id>5942</id><revision><id>35317</id><timestamp>2014-06-17T08:41:50Z</timestamp><text>{{TemplateMapping 
+}}</text></revision></page><page><title>Mapping it:Stato</title><ns>212</ns><id>5942</id><revision><id>39414</id><timestamp>2015-01-19T15:37:41Z</timestamp><text>{{TemplateMapping 
 | mapToClass = Country
 | mappings =
 &lt;!-- confini da aggiungere nell'ontologia --&gt;
    {{ PropertyMapping | templateProperty = indipendenza | ontologyProperty = autonomy }}
    {{ PropertyMapping | templateProperty = popolazioneDensita | ontologyProperty = populationDensity }}
-   {{ PropertyMapping | templateProperty = linkBandiera | ontologyProperty = imageFlag }}
+   {{ PropertyMapping | templateProperty = linkBandiera | ontologyProperty = flag }}
    {{ PropertyMapping | templateProperty = paginaBandiera | ontologyProperty = flagLink }}
    {{ PropertyMapping | templateProperty = PILprocapiteAnno | ontologyProperty = perCapitaIncomeAsOf }}
    {{ PropertyMapping | templateProperty = superficieOrdine | ontologyProperty = areaTotalRanking }}
@@ -1904,6 +1902,8 @@ select count(?s) as ?n, ?d where { ?s a &lt;http://dbpedia.org/ontology/Athlete&
     | mapToClass = ChristianBishop
     | mappings =
     {{ PropertyMapping | templateProperty = nome | ontologyProperty = foaf:name }}
+}}</text></revision></page><page><title>Mapping it:Videogioco</title><ns>212</ns><id>5767</id><revision><id>49415</id><timestamp>2015-10-30T10:55:51Z</timestamp><text>{{TemplateMapping
+| mapToClass = VideoGame
 }}</text></revision></page><page><title>Mapping it:Vino</title><ns>212</ns><id>7364</id><revision><id>35323</id><timestamp>2014-06-17T08:41:55Z</timestamp><text>{{ TemplateMapping
     | mapToClass = Wine
     | mappings =

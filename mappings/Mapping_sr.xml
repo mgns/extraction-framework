@@ -1694,7 +1694,7 @@
 	&lt;!-- {{ PropertyMapping | templateProperty = Pogon | ontologyProperty = }} --&gt;
 	&lt;!-- {{ PropertyMapping | templateProperty = Rejtinzi | ontologyProperty = }} --&gt;
 	&lt;!-- {{ PropertyMapping | templateProperty = Verzija | ontologyProperty = }} --&gt;
-}}</text></revision></page><page><title>Mapping sr:Vladar-lat</title><ns>256</ns><id>8571</id><revision><id>29434</id><timestamp>2014-01-08T08:42:15Z</timestamp><text>{{TemplateMapping
+}}</text></revision></page><page><title>Mapping sr:Vladar-lat</title><ns>256</ns><id>8571</id><revision><id>47457</id><timestamp>2015-04-01T16:26:10Z</timestamp><text>{{TemplateMapping
 | mapToClass = Monarch
 | mappings =
 
@@ -1703,7 +1703,7 @@
 	{{PropertyMapping | templateProperty = mesto_rođenja   | ontologyProperty = birthPlace }}
 	{{PropertyMapping | templateProperty = datum_smrti     | ontologyProperty = deathDate }}
 	{{PropertyMapping | templateProperty = mesto_smrti     | ontologyProperty = deathPlace }}
-        {{PropertyMapping | templateProperty =   sahranjen     | ontologyProperty = buriedPlace }}
+        {{PropertyMapping | templateProperty =   sahranjen     | ontologyProperty = placeOfBurial }}
         {{PropertyMapping | templateProperty = prethodnik      | ontologyProperty = predecessor }}
         {{PropertyMapping | templateProperty = naslednik | ontologyProperty = successor }}
         {{PropertyMapping | templateProperty = dinastija | ontologyProperty = dynasty }}
@@ -2257,7 +2257,7 @@
 	&lt;!-- {{ PropertyMapping | templateProperty = вебсајтлого | ontologyProperty = }} --&gt;
 	&lt;!-- {{ PropertyMapping | templateProperty = зарада | ontologyProperty = }} --&gt;
 	&lt;!-- {{ PropertyMapping | templateProperty = рег | ontologyProperty = }} --&gt;
-}}</text></revision></page><page><title>Mapping sr:Верски поглавар</title><ns>256</ns><id>8899</id><revision><id>31408</id><timestamp>2014-02-03T17:24:05Z</timestamp><text>{{TemplateMapping | mapToClass = Religious
+}}</text></revision></page><page><title>Mapping sr:Верски поглавар</title><ns>256</ns><id>8899</id><revision><id>47462</id><timestamp>2015-04-01T16:27:53Z</timestamp><text>{{TemplateMapping | mapToClass = Religious
 | mappings = 
 
 	{{ PropertyMapping | templateProperty = име | ontologyProperty = foaf:name }} 
@@ -2269,8 +2269,8 @@
 	{{ PropertyMapping | templateProperty = претходник | ontologyProperty = predecessor }}
 	{{ PropertyMapping | templateProperty = звање | ontologyProperty = title }}
 	{{ PropertyMapping | templateProperty = године | ontologyProperty = activeYear}}
-        {{ PropertyMapping | templateProperty = сахрањен | ontologyProperty = buriedPlace }}
-	{{ PropertyMapping | templateProperty = сахрањен | ontologyProperty = buriedPlace }}
+        {{ PropertyMapping | templateProperty = сахрањен | ontologyProperty = placeOfBurial }}
+	{{ PropertyMapping | templateProperty = сахрањен | ontologyProperty = placeOfBurial }}
 	{{ PropertyMapping | templateProperty = право_име | ontologyProperty = originalName }} 
 
 {{IntermediateNodeMapping | nodeClass = Religious| correspondingProperty = person| mappings = 
@@ -2289,7 +2289,7 @@
      {{ PropertyMapping | templateProperty = звање2 | ontologyProperty =  title }}
 
 }}
-}}</text></revision></page><page><title>Mapping sr:Владар</title><ns>256</ns><id>8475</id><revision><id>31354</id><timestamp>2014-02-03T10:53:57Z</timestamp><text>{{TemplateMapping
+}}</text></revision></page><page><title>Mapping sr:Владар</title><ns>256</ns><id>8475</id><revision><id>47459</id><timestamp>2015-04-01T16:26:28Z</timestamp><text>{{TemplateMapping
 | mapToClass = Monarch
 | mappings =
 
@@ -2306,7 +2306,7 @@
 	{{PropertyMapping | templateProperty = супружник | ontologyProperty = spouse  }}
 	{{PropertyMapping | templateProperty = деца | ontologyProperty =  child }}
 	{{PropertyMapping | templateProperty = функција | ontologyProperty = title}}
-        {{PropertyMapping | templateProperty = сахрањен| ontologyProperty = buriedPlace}}
+        {{PropertyMapping | templateProperty = сахрањен| ontologyProperty = placeOfBurial}}
         {{PropertyMapping | templateProperty = владавина| ontologyProperty = activeYear}}
 
 
@@ -2403,7 +2403,7 @@
     {{PropertyMapping | templateProperty =  брзина_крстарења | ontologyProperty = averageSpeed }}
     {{PropertyMapping | templateProperty =  радијус_кретања   | ontologyProperty = meanRadius }}                                      
     {{PropertyMapping | templateProperty =  долет   | ontologyProperty = range | unit = Kilometre}}
-}}</text></revision></page><page><title>Mapping sr:Војник</title><ns>256</ns><id>9104</id><revision><id>31257</id><timestamp>2014-01-31T07:50:40Z</timestamp><text>{{TemplateMapping | mapToClass = MilitaryPerson
+}}</text></revision></page><page><title>Mapping sr:Војник</title><ns>256</ns><id>9104</id><revision><id>47461</id><timestamp>2015-04-01T16:27:41Z</timestamp><text>{{TemplateMapping | mapToClass = MilitaryPerson
 | mappings = 
 	{{ PropertyMapping | templateProperty = born | ontologyProperty = birthDate}}
 	{{ PropertyMapping | templateProperty = name | ontologyProperty = foaf:name}}
@@ -2417,7 +2417,7 @@
 	{{ PropertyMapping | templateProperty = allegiance | ontologyProperty = allegiance }}
 	{{ PropertyMapping | templateProperty = placeofdeath | ontologyProperty = deathPlace}}
 	{{ PropertyMapping | templateProperty = branch | ontologyProperty = militaryBranch}}
-	{{ PropertyMapping | templateProperty = placeofburial | ontologyProperty = buriedPlace }}
+	{{ PropertyMapping | templateProperty = placeofburial | ontologyProperty = placeOfBurial }}
 	{{ PropertyMapping | templateProperty = unit | ontologyProperty = militaryUnit }}
 	{{ PropertyMapping | templateProperty = nickname | ontologyProperty = foaf:name}}
 	{{ PropertyMapping | templateProperty = relations | ontologyProperty = relation }}
@@ -4747,12 +4747,12 @@
 	{{PropertyMapping | templateProperty = гшир      | ontologyProperty = geo:lat }}
 	{{PropertyMapping | templateProperty = гдуж    | ontologyProperty = geo:long }}
 
-}}</text></revision></page><page><title>Mapping sr:Град у Украјини</title><ns>256</ns><id>8865</id><revision><id>30287</id><timestamp>2014-01-21T08:29:04Z</timestamp><text>{{TemplateMapping
+}}</text></revision></page><page><title>Mapping sr:Град у Украјини</title><ns>256</ns><id>8865</id><revision><id>47867</id><timestamp>2015-05-09T08:02:35Z</timestamp><text>{{TemplateMapping
 | mapToClass = City
 | mappings =
 	{{PropertyMapping | templateProperty = назив  | ontologyProperty = foaf:name }}
 	{{PropertyMapping | templateProperty = изворни_назив | ontologyProperty = originalName }}
-	{{PropertyMapping | templateProperty = оснивање   | ontologyProperty = foundationDate }}
+	{{PropertyMapping | templateProperty = оснивање   | ontologyProperty = foundingDate }}
         {{PropertyMapping | templateProperty = област| ontologyProperty = region}}
 	{{PropertyMapping | templateProperty = надморска_висина    | ontologyProperty = elevation | unit = metre  }}
 	{{PropertyMapping | templateProperty = становништво  | ontologyProperty = populationTotal }}
@@ -5223,7 +5223,7 @@
 	&lt;!-- {{ PropertyMapping | templateProperty = caption | ontologyProperty = }} --&gt;
 	 {{ PropertyMapping | templateProperty = location | ontologyProperty = location }}
 	&lt;!-- {{ PropertyMapping | templateProperty = image | ontologyProperty = }} --&gt;
-}}</text></revision></page><page><title>Mapping sr:Зграда</title><ns>256</ns><id>8458</id><revision><id>30765</id><timestamp>2014-01-22T13:03:27Z</timestamp><text>{{TemplateMapping
+}}</text></revision></page><page><title>Mapping sr:Зграда</title><ns>256</ns><id>8458</id><revision><id>48638</id><timestamp>2015-08-06T14:54:39Z</timestamp><text>{{TemplateMapping
 | mapToClass = Building
 | mappings =
 
@@ -5241,7 +5241,7 @@
 	{{PropertyMapping | templateProperty = инжињер 	| ontologyProperty = engineer }}
 	{{PropertyMapping | templateProperty = аутор	| ontologyProperty = author }}
 	{{PropertyMapping | templateProperty = власник  	| ontologyProperty = owner }}
-	{{PropertyMapping | templateProperty = референце	| ontologyProperty = reference }}
+	{{PropertyMapping | templateProperty = референце	| ontologyProperty = dc:identifier }}
 	{{PropertyMapping | templateProperty = број_спратова | ontologyProperty = floorCount }}
 	{{PropertyMapping | templateProperty = површина | ontologyProperty = floorArea }}
 
@@ -6317,13 +6317,13 @@
 	&lt;!-- {{ PropertyMapping | templateProperty = следећа сезона | ontologyProperty = }} --&gt;
 	&lt;!-- {{ PropertyMapping | templateProperty = трајање | ontologyProperty = }} --&gt;
 	&lt;!-- {{ PropertyMapping | templateProperty = утакмица | ontologyProperty = }} --&gt;
-}}</text></revision></page><page><title>Mapping sr:Ирски окрузи</title><ns>256</ns><id>8979</id><revision><id>30960</id><timestamp>2014-01-24T13:16:39Z</timestamp><text>{{TemplateMapping | mapToClass = Municipality
+}}</text></revision></page><page><title>Mapping sr:Ирски окрузи</title><ns>256</ns><id>8979</id><revision><id>45212</id><timestamp>2015-02-12T19:12:06Z</timestamp><text>{{TemplateMapping | mapToClass = Municipality
 | mappings = 
 	{{ PropertyMapping | templateProperty = веб | ontologyProperty = foaf:homepage}}
 	{{ PropertyMapping | templateProperty = град | ontologyProperty = capital }}
         {{ PropertyMapping | templateProperty = год| ontologyProperty = foundation}}
 	{{ PropertyMapping | templateProperty = густ_нас | ontologyProperty =populationDensity | unit = inhabitantsPerSquareKilometre}}
-	{{ PropertyMapping | templateProperty = енг-ирс_име | ontologyProperty = irishName }}
+	{{ PropertyMapping | templateProperty = енг-ирс_име | ontologyProperty = foaf:name }}
 	{{ PropertyMapping | templateProperty = име | ontologyProperty = foaf:name}}
 	{{ PropertyMapping | templateProperty = површ | ontologyProperty =areaTotal | unit = squareKilometre }}
 	{{ PropertyMapping | templateProperty = покрајина | ontologyProperty = region }}
@@ -6606,7 +6606,7 @@
 	 {{ PropertyMapping | templateProperty = шампиони | ontologyProperty = champion  }} 
 	&lt;!-- {{ PropertyMapping | templateProperty = домаћин | ontologyProperty = }} --&gt;
 	&lt;!-- {{ PropertyMapping | templateProperty = други | ontologyProperty = }} --&gt;
-}}</text></revision></page><page><title>Mapping sr:Кутијица за НБА</title><ns>256</ns><id>8989</id><revision><id>30985</id><timestamp>2014-01-27T07:27:47Z</timestamp><text>{{TemplateMapping | mapToClass = BasketballTeam
+}}</text></revision></page><page><title>Mapping sr:Кутијица за НБА</title><ns>256</ns><id>8989</id><revision><id>47866</id><timestamp>2015-05-09T08:02:10Z</timestamp><text>{{TemplateMapping | mapToClass = BasketballTeam
 | mappings = 
 	{{ PropertyMapping | templateProperty = величина | ontologyProperty = teamSize }}
 	{{ PropertyMapping | templateProperty = власник | ontologyProperty = owner }}
@@ -6615,7 +6615,7 @@
 	{{ PropertyMapping | templateProperty = име | ontologyProperty = foaf:name}}
 	&lt;!-- {{ PropertyMapping | templateProperty = конф_шамп | ontologyProperty = }} --&gt;
 	&lt;!--{{ PropertyMapping | templateProperty = конференција | ontologyProperty =  }}--&gt;
-	{{ PropertyMapping | templateProperty = основан | ontologyProperty = foundationDate}}
+	{{ PropertyMapping | templateProperty = основан | ontologyProperty = foundingDate}}
 	{{ PropertyMapping | templateProperty = тренер | ontologyProperty = coach }}
 	{{ PropertyMapping | templateProperty = дворана | ontologyProperty = homeArena}}
 	{{ PropertyMapping | templateProperty = изворно име | ontologyProperty = originalName}}
@@ -7581,14 +7581,14 @@
 	{{ PropertyMapping | templateProperty = председник општине | ontologyProperty = president }}
 	{{ PropertyMapping | templateProperty = статус општине | ontologyProperty = currentStatus }}
 	{{ PropertyMapping | templateProperty = тип управе | ontologyProperty = governmentType}}
-}}</text></revision></page><page><title>Mapping sr:Манастир инфо</title><ns>256</ns><id>8510</id><revision><id>30858</id><timestamp>2014-01-23T10:18:08Z</timestamp><text>{{TemplateMapping
+}}</text></revision></page><page><title>Mapping sr:Манастир инфо</title><ns>256</ns><id>8510</id><revision><id>48586</id><timestamp>2015-08-05T15:30:53Z</timestamp><text>{{TemplateMapping
 | mapToClass = Monastery
 | mappings =
     {{PropertyMapping | templateProperty =  име    | ontologyProperty = foaf:name }}
     {{PropertyMapping | templateProperty =  гширина  | ontologyProperty = geo:lat }}
     {{PropertyMapping | templateProperty =  држава | ontologyProperty = country }}
     {{PropertyMapping | templateProperty =  година оснивања | ontologyProperty = foundingYear  }}
-    {{PropertyMapping | templateProperty =  ктитор   | ontologyProperty = foundingPerson }}
+    {{PropertyMapping | templateProperty =  ктитор   | ontologyProperty = founder }}
     {{PropertyMapping | templateProperty =  локација| ontologyProperty = location }}
 
     {{PropertyMapping | templateProperty =  јурисдикција | ontologyProperty = jurisdiction}}
@@ -8312,13 +8312,13 @@
 	{{ PropertyMapping | templateProperty = површ | ontologyProperty = areaTotal | unit = squareKilometre}}
 	{{ PropertyMapping | templateProperty = стан | ontologyProperty = totalPopulation}}
         {{ PropertyMapping | templateProperty = швед_име| ontologyProperty = originalName}}
-}}</text></revision></page><page><title>Mapping sr:Окрузи Италије</title><ns>256</ns><id>8951</id><revision><id>31554</id><timestamp>2014-02-05T14:50:29Z</timestamp><text>{{TemplateMapping | mapToClass = District
+}}</text></revision></page><page><title>Mapping sr:Окрузи Италије</title><ns>256</ns><id>8951</id><revision><id>45204</id><timestamp>2015-02-12T18:48:27Z</timestamp><text>{{TemplateMapping | mapToClass = District
 | mappings = 
 	 {{ PropertyMapping | templateProperty = веб | ontologyProperty = foaf:homepage }}
 	 {{ PropertyMapping | templateProperty = град | ontologyProperty = capital}}
       {{ PropertyMapping | templateProperty = густ_нас | ontologyProperty = populationDensity | unit = inhabitantsPerSquareKilometre }} 
 	 {{ PropertyMapping | templateProperty = име | ontologyProperty = foaf:name }} 
-	 {{ PropertyMapping | templateProperty = италијанско име | ontologyProperty = italianName }}
+	 {{ PropertyMapping | templateProperty = италијанско име | ontologyProperty = foaf:name | language = it }}
 	 {{ PropertyMapping | templateProperty = површ | ontologyProperty = areaTotal | unit = squareKilometre }}
 	 {{ PropertyMapping | templateProperty = покрајина | ontologyProperty = province }}
 	&lt;!-- {{ PropertyMapping | templateProperty = слика | ontologyProperty = }} --&gt;
@@ -8523,7 +8523,7 @@
 	{{PropertyMapping | templateProperty =  вода      | ontologyProperty = water }}
 	{{PropertyMapping | templateProperty =  држава  | ontologyProperty = country }}
 
-}}</text></revision></page><page><title>Mapping sr:Папа</title><ns>256</ns><id>8949</id><revision><id>30843</id><timestamp>2014-01-23T09:13:28Z</timestamp><text>{{TemplateMapping | mapToClass = Pope
+}}</text></revision></page><page><title>Mapping sr:Папа</title><ns>256</ns><id>8949</id><revision><id>47460</id><timestamp>2015-04-01T16:27:28Z</timestamp><text>{{TemplateMapping | mapToClass = Pope
 | mappings = 
 	{{ PropertyMapping | templateProperty = име | ontologyProperty = foaf:name }}
 	{{ PropertyMapping | templateProperty = датум_смрти | ontologyProperty = deathDate}}
@@ -8533,7 +8533,7 @@
 	{{ PropertyMapping | templateProperty = место_рођења | ontologyProperty = birthPlace }}
 	{{ PropertyMapping | templateProperty = место_смрти | ontologyProperty = deathPlace }}
 	{{ PropertyMapping | templateProperty = народност | ontologyProperty = nationality }}
-	{{ PropertyMapping | templateProperty = сахрањен | ontologyProperty = buriedPlace }}
+	{{ PropertyMapping | templateProperty = сахрањен | ontologyProperty = placeOfBurial }}
 }}</text></revision></page><page><title>Mapping sr:Периф ГР</title><ns>256</ns><id>9076</id><revision><id>31193</id><timestamp>2014-01-29T15:13:29Z</timestamp><text>{{TemplateMapping | mapToClass = Region
 | mappings = 
 	 {{ PropertyMapping | templateProperty = веб | ontologyProperty = foaf:homepage }} 
@@ -8667,7 +8667,7 @@
         
 
 	
-}}</text></revision></page><page><title>Mapping sr:Племић</title><ns>256</ns><id>8758</id><revision><id>31382</id><timestamp>2014-02-03T14:05:11Z</timestamp><text>{{TemplateMapping
+}}</text></revision></page><page><title>Mapping sr:Племић</title><ns>256</ns><id>8758</id><revision><id>47458</id><timestamp>2015-04-01T16:26:22Z</timestamp><text>{{TemplateMapping
 | mapToClass = Noble
 | mappings =
 	{{PropertyMapping | templateProperty =  име  | ontologyProperty = foaf:name }}
@@ -8684,7 +8684,7 @@
 	{{PropertyMapping | templateProperty =  супружник  | ontologyProperty = spouse }}
 	{{PropertyMapping | templateProperty =  деца | ontologyProperty = child }}
 
-	{{PropertyMapping | templateProperty =  сахрањен | ontologyProperty = buriedPlace }}
+	{{PropertyMapping | templateProperty =  сахрањен | ontologyProperty = placeOfBurial }}
 
 	{{PropertyMapping | templateProperty =  потпис | ontologyProperty = signature }}
 
@@ -8850,7 +8850,7 @@
 	&lt;!-- {{ PropertyMapping | templateProperty = лого војводства | ontologyProperty = }} --&gt;
 	&lt;!-- {{ PropertyMapping | templateProperty = лого_војводства | ontologyProperty = }} --&gt;
 	&lt;!-- {{ PropertyMapping | templateProperty = мапа вој | ontologyProperty = }} --&gt;
-}}</text></revision></page><page><title>Mapping sr:Православна црква</title><ns>256</ns><id>8983</id><revision><id>30970</id><timestamp>2014-01-24T14:12:27Z</timestamp><text>{{TemplateMapping | mapToClass = Church
+}}</text></revision></page><page><title>Mapping sr:Православна црква</title><ns>256</ns><id>8983</id><revision><id>49974</id><timestamp>2015-12-31T01:59:12Z</timestamp><text>{{TemplateMapping | mapToClass = Church
 | mappings = 
 	{{ PropertyMapping | templateProperty = Сједиште | ontologyProperty = headquarter}}
 	{{ PropertyMapping | templateProperty = Црква 1 | ontologyProperty = foaf:name}}
@@ -8884,14 +8884,14 @@
 	{{PropertyMapping | templateProperty =  угашена   | ontologyProperty = extinctionDate }}
 
 
-}}</text></revision></page><page><title>Mapping sr:Преф ГР</title><ns>256</ns><id>8762</id><revision><id>31463</id><timestamp>2014-02-04T15:43:16Z</timestamp><text>{{TemplateMapping
+}}</text></revision></page><page><title>Mapping sr:Преф ГР</title><ns>256</ns><id>8762</id><revision><id>45281</id><timestamp>2015-02-13T11:41:27Z</timestamp><text>{{TemplateMapping
 | mapToClass = Prefecture
 | mappings =
         {{PropertyMapping | templateProperty =  име | ontologyProperty = foaf:name}}
 	{{PropertyMapping | templateProperty =  град | ontologyProperty = city }}
         {{PropertyMapping | templateProperty =  стан | ontologyProperty = totalPopulation}}
         {{PropertyMapping | templateProperty =  год | ontologyProperty = censusYear}}
-        {{PropertyMapping | templateProperty =  грчко име| ontologyProperty = greekName}}
+        {{PropertyMapping | templateProperty =  грчко име| ontologyProperty = foaf:name | language = el}}
 	{{PropertyMapping | templateProperty =  површ | ontologyProperty = surfaceArea | unit = squareKilometre }} 
 	{{PropertyMapping | templateProperty =  густ_нас   | ontologyProperty = populationDensity | unit = inhabitantsPerSquareKilometre }}
 	{{PropertyMapping | templateProperty =  општина | ontologyProperty = numberOfMunicipalities }}
@@ -9497,16 +9497,16 @@
         {{PropertyMapping | templateProperty = Link | ontologyProperty = foaf:homepage}}
         {{PropertyMapping | templateProperty = Year | ontologyProperty = year }}
         {{PropertyMapping | templateProperty = Coordinates | ontologyProperty = coordinates }}
-}}</text></revision></page><page><title>Mapping sr:Уметник</title><ns>256</ns><id>8472</id><revision><id>31335</id><timestamp>2014-02-03T10:00:21Z</timestamp><text>{{TemplateMapping
+}}</text></revision></page><page><title>Mapping sr:Уметник</title><ns>256</ns><id>8472</id><revision><id>49592</id><timestamp>2015-11-23T02:27:45Z</timestamp><text>{{TemplateMapping
 | mapToClass = Artist
 | mappings =
 
 	{{PropertyMapping | templateProperty = име | ontologyProperty =  foaf:name }}
-	{{PropertyMapping | templateProperty = датум_рођења | ontologyProperty = birthDate  }}
+	{{PropertyMapping | templateProperty = датум_рођења| ontologyProperty = birthDate  }}
 	{{PropertyMapping | templateProperty = место_рођења | ontologyProperty =  birthPlace }}
 	{{PropertyMapping | templateProperty = датум_смрти | ontologyProperty =  deathDate }}
 	{{PropertyMapping | templateProperty = место_смрти | ontologyProperty =  deathPlace }}
-	{{PropertyMapping | templateProperty = поље | ontologyProperty =  field }}
+	{{PropertyMapping | templateProperty = поле | ontologyProperty =  field }}
 	{{PropertyMapping | templateProperty = правац_традиција | ontologyProperty = movement  }}
 	{{PropertyMapping | templateProperty = утицаји_од | ontologyProperty = influencedBy  }}
 	{{PropertyMapping | templateProperty = утицао_на | ontologyProperty =  influenced }}
@@ -9556,12 +9556,12 @@
         {{PropertyMapping | templateProperty =  позив_бр | ontologyProperty = areaCode}}
 	{{PropertyMapping | templateProperty =  веб   | ontologyProperty = foaf:homepage }}
 
-}}</text></revision></page><page><title>Mapping sr:Ф1 возач</title><ns>256</ns><id>8616</id><revision><id>31001</id><timestamp>2014-01-27T09:11:57Z</timestamp><text>{{TemplateMapping
-| mapToClass = FormulaOneRacing
+}}</text></revision></page><page><title>Mapping sr:Ф1 возач</title><ns>256</ns><id>8616</id><revision><id>46257</id><timestamp>2015-03-18T14:51:49Z</timestamp><text>{{TemplateMapping
+| mapToClass = FormulaOneRacer
 | mappings =
 
 	{{PropertyMapping | templateProperty = име | ontologyProperty = foaf:name }}
-        {{PropertyMapping | templateProperty = пол| ontologyProperty = genre }}
+        {{PropertyMapping | templateProperty = пол| ontologyProperty = poles }}
         {{PropertyMapping | templateProperty = кругови | ontologyProperty = numberOfLaps }}
         {{PropertyMapping | templateProperty = шампионати| ontologyProperty = championships}}
         {{PropertyMapping | templateProperty = болид| ontologyProperty = carNumber}}
@@ -10015,7 +10015,7 @@
 	{{ PropertyMapping | templateProperty = обновљена | ontologyProperty = rebuildingDate }}
 	{{ PropertyMapping | templateProperty = висина | ontologyProperty = elevation | unit = metre}}
 }}
-}}</text></revision></page><page><title>Mapping sr:Часопис</title><ns>256</ns><id>8568</id><revision><id>30906</id><timestamp>2014-01-23T14:15:59Z</timestamp><text>{{TemplateMapping
+}}</text></revision></page><page><title>Mapping sr:Часопис</title><ns>256</ns><id>8568</id><revision><id>48388</id><timestamp>2015-06-16T14:01:27Z</timestamp><text>{{TemplateMapping
 | mapToClass = Magazine
 | mappings =
 	{{PropertyMapping | templateProperty =  име | ontologyProperty = foaf:name }}
@@ -10023,7 +10023,7 @@
 	{{PropertyMapping | templateProperty =  формат | ontologyProperty = format }}
 	{{PropertyMapping | templateProperty =  основан  | ontologyProperty = foundingDate }}
         {{PropertyMapping | templateProperty =  престанак излажења    | ontologyProperty = finalPublicationDate }}
-        {{PropertyMapping | templateProperty =  цена | ontologyProperty = priceMoney }}
+        {{PropertyMapping | templateProperty =  цена | ontologyProperty = price }}
         {{PropertyMapping | templateProperty =  власник   | ontologyProperty = owner }}
 	{{PropertyMapping | templateProperty =  издавач    | ontologyProperty = publisher }}
         {{PropertyMapping | templateProperty =  уредник   | ontologyProperty = editor }} 

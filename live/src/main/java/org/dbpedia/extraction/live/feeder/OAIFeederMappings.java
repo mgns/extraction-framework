@@ -2,9 +2,11 @@ package org.dbpedia.extraction.live.feeder;
 
 import org.dbpedia.extraction.live.core.LiveOptions;
 import org.dbpedia.extraction.live.helper.MappingAffectedPagesHelper;
-import org.dbpedia.extraction.live.queue.LiveQueuePriority;
 import org.dbpedia.extraction.live.queue.LiveQueueItem;
+import org.dbpedia.extraction.live.queue.LiveQueuePriority;
 import scala.collection.JavaConversions;
+
+import java.util.HashSet;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,7 +29,7 @@ public class OAIFeederMappings extends OAIFeeder {
                 pollInterval, sleepInterval, defaultStartTime,
                 folderBasePath);
 
-        String langCode = LiveOptions.options.get("language");
+        String langCode = LiveOptions.language;
         mappingNamespace = "Mapping " + langCode + ":";
 
     }
@@ -42,8 +44,8 @@ public class OAIFeederMappings extends OAIFeeder {
         String title = item.getItemName().substring(item.getItemName().indexOf(":")+1);
 
         //if (!item.isDeleted()) {
-            for (Object newItem: JavaConversions.asJavaIterable(MappingAffectedPagesHelper.GetMappingPages(title))) {
-                addPageIDtoQueue(new LiveQueueItem((Long) newItem, item.getModificationDate()));
+            for (Object newItem: new HashSet<>(JavaConversions.asJavaCollection(MappingAffectedPagesHelper.GetMappingPages(title)))) {
+                addPageIDtoQueue(new LiveQueueItem((Long) newItem, title, item.getModificationDate(), false, ""));
             }
         //} else {
             // TODO find which template the deleted infobox was referring to
