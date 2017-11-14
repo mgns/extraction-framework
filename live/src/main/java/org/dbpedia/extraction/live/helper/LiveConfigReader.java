@@ -43,7 +43,7 @@ public class LiveConfigReader {
 
     //Tag names that are use in live.config file
     private static final String EXTRACTOR_TAGNAME = "extractor";
-    private static final String LANUAGE_TAGNAME = "language";
+    private static final String LANGUAGE_TAGNAME = "language";
     private static final String UPDATE_ONTOLGY_AND_MAPPINGS_PERIOD_TAGNAME = "updateOntologyAndMappingsPeriod";
 
     private static final String NAME_ATTRIBUTENAME = "name";
