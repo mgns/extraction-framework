@@ -30,7 +30,7 @@ class JSONCache(pageID: Long, pageTitle: String) {
   initCache
 
   def performCleanUpdate() : Boolean = {
-    return cacheObj != null && cacheObj.updatedTimes >=5
+    return cacheObj != null && cacheObj.updatedTimes >= 5
   }
 
   def getHashForExtractor(extractor: String): String = {
@@ -164,7 +164,6 @@ object JSONCache {
     var destList = new ArrayBuffer[LiveDestination]()
     destList += new PublisherDiffDestination(pageID, true, if (cache.cacheObj != null) cache.cacheObj.subjects else new java.util.HashSet[String]()) //  unpublish in changesetes
     val compositeDest: LiveDestination = new CompositeLiveDestination(destList.toSeq: _*) // holds all main destinations
-
 
     compositeDest.open
     compositeDest.write("dummy extractor","dummy hash", Seq(), triples, Seq())
